@@ -6,6 +6,7 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 # require 'mina/rvm'    # for rvm support. (http://rvm.io)
 
 require 'mina/nginx'
+require 'mina_sidekiq/tasks'
 
 # Basic settings:
 #   domain       - The hostname to SSH to.
@@ -96,14 +97,14 @@ task :deploy => :environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    #invoke :'rails:assets_precompile'
+    invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
     to :launch do
-      #queue "mkdir -p #{deploy_to}/#{current_path}/tmp/"
-      #queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
-      #invoke :'unicorn:restart'
-      #invoke :'sidekiq:restart'
+      queue "mkdir -p #{deploy_to}/#{current_path}/tmp/"
+      queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
+      invoke :'unicorn:restart'
+      invoke :'sidekiq:restart'
     end
   end
 end
