@@ -6,6 +6,7 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 # require 'mina/rvm'    # for rvm support. (http://rvm.io)
 
 require 'mina/nginx'
+require 'mina/unicorn'
 require 'mina_sidekiq/tasks'
 
 # Basic settings:
